@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gopi Kishan - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <style>
+        * { box-sizing: border-box; }
+        body { overflow: hidden; user-select: none; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-tap-highlight-color: transparent; margin: 0; }
+
+        /* macOS Tahoe Wallpaper - Real Lake Tahoe photo */
+        .tahoe-wallpaper {
+            background: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=3840&q=90&auto=format&fit=crop') center/cover no-repeat fixed;
+            position: relative;
+        }
+        .tahoe-wallpaper::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(0,0,0,0.15) 100%);
+            pointer-events: none;
+        }
+
+        /* ===== LIQUID GLASS CORE ===== */
+        .liquid-glass {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
+            -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
+            border: 0.5px solid rgba(255,255,255,0.25);
+            box-shadow: 0 0 0 0.5px rgba(255,255,255,0.08) inset, 0 1px 0 rgba(255,255,255,0.15) inset, 0 8px 40px rgba(0,0,0,0.15);
+        }
+        .liquid-glass-strong {
+            background: rgba(255,255,255,0.18);
+            backdrop-filter: blur(60px) saturate(220%) brightness(1.15);
+            -webkit-backdrop-filter: blur(60px) saturate(220%) brightness(1.15);
+            border: 0.5px solid rgba(255,255,255,0.3);
+            box-shadow: 0 0 0 0.5px rgba(255,255,255,0.1) inset, 0 1px 0 rgba(255,255,255,0.2) inset, 0 12px 48px rgba(0,0,0,0.2);
+        }
+        .liquid-glass-dark {
+            background: rgba(30,30,30,0.55);
+            backdrop-filter: blur(50px) saturate(180%);
+            -webkit-backdrop-filter: blur(50px) saturate(180%);
+            border: 0.5px solid rgba(255,255,255,0.12);
+            box-shadow: 0 0 0 0.5px rgba(255,255,255,0.05) inset, 0 1px 0 rgba(255,255,255,0.08) inset, 0 12px 48px rgba(0,0,0,0.3);
+        }
+
+        /* ===== TAHOE MENU BAR ===== */
+        .tahoe-menubar {
+            background: rgba(0,0,0,0.001);
+            backdrop-filter: blur(50px) saturate(200%) brightness(1.3);
+            -webkit-backdrop-filter: blur(50px) saturate(200%) brightness(1.3);
+            border-bottom: 0.5px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+        }
+        .menu-item { padding: 0 10px; height: 100%; display: flex; align-items: center; cursor: default; border-radius: 6px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.9); letter-spacing: -0.01em; }
+        .menu-item:hover { background: rgba(255,255,255,0.12); }
+        .menu-item.active { background: rgba(255,255,255,0.15); }
+
+        /* ===== TAHOE DROPDOWNS ===== */
+        .tahoe-dropdown {
+            position: absolute; top: 30px; display: none; z-index: 200;
+            background: rgba(40,40,45,0.72);
+            backdrop-filter: blur(60px) saturate(200%);
+            -webkit-backdrop-filter: blur(60px) saturate(200%);
+            border: 0.5px solid rgba(255,255,255,0.18);
+            border-radius: 12px; padding: 5px; min-width: 220px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 0.5px rgba(255,255,255,0.05) inset;
+            animation: dropIn 0.15s ease-out;
+        }
+        .tahoe-dropdown.show { display: block; }
+        @keyframes dropIn { from { opacity: 0; transform: translateY(-4px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .dropdown-item { padding: 5px 12px; border-radius: 6px; font-size: 13px; cursor: default; display: flex; justify-content: space-between; align-items: center; color: rgba(255,255,255,0.88); }
+        .dropdown-item:hover { background: rgba(0,122,255,0.85); color: white; }
+        .dropdown-sep { height: 0.5px; background: rgba(255,255,255,0.1); margin: 4px 8px; }
+
+        /* ===== TAHOE WINDOWS ===== */
+        .tahoe-window {
+            position: absolute; display: none; overflow: hidden;
+            border-radius: 16px;
+            background: rgba(38,38,42,0.78);
+            backdrop-filter: blur(50px) saturate(180%);
+            -webkit-backdrop-filter: blur(50px) saturate(180%);
+            border: 0.5px solid rgba(255,255,255,0.15);
+            box-shadow: 0 24px 80px rgba(0,0,0,0.35), 0 0 0 0.5px rgba(255,255,255,0.06) inset, 0 1px 0 rgba(255,255,255,0.1) inset;
+            transition: transform 0.25s cubic-bezier(0.2,0.8,0.2,1), opacity 0.2s ease;
+        }
+        .tahoe-window.minimized { transform: scale(0.1) translateY(2000px); opacity: 0; pointer-events: none; }
+        .tahoe-window.maximized { top: 30px !important; left: 0 !important; width: 100vw !important; height: calc(100vh - 30px) !important; border-radius: 0; }
+
+        /* Tahoe Window Header - Liquid Glass toolbar */
+        .tahoe-header {
+            height: 52px; display: flex; align-items: center; padding: 0 16px; position: relative; z-index: 10; cursor: default;
+            background: rgba(255,255,255,0.06);
+            border-bottom: 0.5px solid rgba(255,255,255,0.08);
+        }
+        /* Traffic Lights - Tahoe style */
+        .tl { width: 13px; height: 13px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px; cursor: pointer; transition: all 0.15s; }
+        .tl-close { background: #FF5F57; }
+        .tl-min { background: #FEBC2E; }
+        .tl-max { background: #28C840; }
+        .tl svg { opacity: 0; width: 8px; height: 8px; color: rgba(0,0,0,0.5); }
+        .tahoe-header:hover .tl svg { opacity: 1; }
+        .drag-area { flex-grow: 1; height: 100%; cursor: grab; display: flex; align-items: center; justify-content: center; }
+        .drag-area:active { cursor: grabbing; }
+
+        /* Window Content */
+        .window-content { overflow-y: auto; height: calc(100% - 52px); user-select: text; }
+        ::-webkit-scrollbar { width: 7px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+
+        /* ===== TAHOE DOCK ===== */
+        .tahoe-dock-wrap { position: absolute; bottom: 8px; width: 100%; display: flex; justify-content: center; z-index: 50; pointer-events: none; }
+        .tahoe-dock {
+            pointer-events: auto; display: flex; align-items: flex-end; padding: 5px 8px; gap: 4px; height: 68px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
+            -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
+            border: 0.5px solid rgba(255,255,255,0.2);
+            border-radius: 22px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.2), 0 0 0 0.5px rgba(255,255,255,0.06) inset, 0 1px 0 rgba(255,255,255,0.12) inset;
+        }
+        .dock-item {
+            width: 52px; height: 52px; cursor: pointer; position: relative; display: flex; justify-content: center; align-items: center; transform-origin: bottom center;
+            transition: all 0.2s cubic-bezier(0.25,0.46,0.45,0.94);
+            border-radius: 12px;
+        }
+        .dock-item:hover { transform: scale(1.35) translateY(-12px); margin: 0 14px; z-index: 10; }
+        .dock-item svg, .dock-item img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+        .dock-dot { width: 4px; height: 4px; background: rgba(255,255,255,0.7); border-radius: 50%; position: absolute; bottom: -7px; opacity: 0; }
+        .dock-item.open .dock-dot { opacity: 1; }
+
+        /* Desktop Icons */
+        .desktop-icon {
+            display: flex; flex-direction: column; align-items: center; width: 84px; padding: 6px; border-radius: 10px; cursor: pointer; border: 1px solid transparent; transition: all 0.15s;
+        }
+        .desktop-icon:hover { background: rgba(255,255,255,0.08); }
+        .desktop-icon.selected { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.15); }
+        .desktop-icon span { text-shadow: 0 1px 3px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.5); font-size: 12px; color: white; font-weight: 600; text-align: center; margin-top: 5px; letter-spacing: 0.01em; }
+
+        /* Resume PDF Page */
+        .pdf-page { background: white; box-shadow: 0 2px 20px rgba(0,0,0,0.15); margin: 20px auto; padding: 40px; width: 90%; max-width: 800px; min-height: 1000px; border-radius: 4px; }
+
+        /* Tahoe Control Center */
+        .tahoe-cc {
+            position: absolute; right: 4px; display: none; z-index: 200; width: 340px; padding: 14px;
+            background: rgba(30,30,34,0.75);
+            backdrop-filter: blur(60px) saturate(200%);
+            -webkit-backdrop-filter: blur(60px) saturate(200%);
+            border: 0.5px solid rgba(255,255,255,0.15);
+            border-radius: 20px;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.4), 0 0 0 0.5px rgba(255,255,255,0.05) inset;
+            animation: dropIn 0.2s ease-out;
+        }
+        .tahoe-cc.show { display: block; }
+        .cc-card {
+            background: rgba(255,255,255,0.08); border-radius: 14px; border: 0.5px solid rgba(255,255,255,0.08);
+            transition: all 0.15s;
+        }
+        .cc-card:hover { background: rgba(255,255,255,0.11); }
+        .cc-toggle { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; cursor: pointer; }
+        .cc-toggle.active { background: #007AFF; color: white; }
+        .cc-toggle.inactive { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.5); }
+        .cc-slider-track { width: 100%; height: 24px; background: rgba(255,255,255,0.08); border-radius: 12px; position: relative; cursor: pointer; overflow: hidden; }
+        .cc-slider-fill { height: 100%; background: #007AFF; border-radius: 12px; position: absolute; left: 0; top: 0; transition: width 0.3s ease; }
+
+        /* ===== MOBILE iOS ===== */
+        @media (max-width: 768px) {
+            .tahoe-window {
+                top: 0 !important; left: 0 !important; width: 100vw !important; height: 100dvh !important;
+                border-radius: 0 !important; border: none !important;
+                transform: translateY(100%) !important; opacity: 1 !important;
+                transition: transform 0.4s cubic-bezier(0.32,0.72,0,1) !important; z-index: 100 !important;
+            }
+            .tahoe-window.mobile-active { transform: translateY(0) !important; }
+            .tahoe-header { height: 56px; padding-top: 8px; background: rgba(30,30,34,0.85); backdrop-filter: blur(30px); }
+            .window-content { height: calc(100% - 56px); }
+            .pdf-page { width: 100%; padding: 20px; margin: 0; min-height: auto; box-shadow: none; border-radius: 0; }
+            #desktop-icons { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 20px 15px; padding: 30px 20px; align-items: flex-start; }
+            .desktop-icon { width: 70px; }
+            .desktop-icon svg { width: 56px; height: 56px; }
+            .desktop-icon span { font-size: 12px; margin-top: 6px; }
+            .tahoe-dock-wrap { bottom: 16px; }
+            .tahoe-dock { width: 90%; max-width: 350px; justify-content: space-around; border-radius: 30px; height: 72px; padding: 8px 14px; }
+            .dock-item { width: 52px; height: 52px; }
+            .dock-item:hover { transform: none; margin: 0; }
+            .dock-dot { display: none; }
+            .drag-area { cursor: default; }
+        }
+    </style>
+</head>
+<body class="tahoe-wallpaper w-screen h-screen relative" onclick="closeAllMenus(event)">
+
+    <!-- TAHOE MENU BAR -->
+    <div class="tahoe-menubar w-full h-[30px] fixed top-0 z-[60] flex justify-between items-center px-2 md:px-2">
+        <!-- Mobile Dynamic Island -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[32px] bg-black rounded-b-[22px] md:hidden z-50">
+            <div class="absolute right-3 top-1/2 -translate-y-1/2 w-[7px] h-[7px] rounded-full bg-[#1a1a1a] border border-[#333]"></div>
+        </div>
+        <!-- iOS Time -->
+        <div class="md:hidden font-semibold text-[15px] text-white/90 z-50 w-1/3 pt-1 pl-2" id="ios-time">9:41</div>
+
+        <!-- Mac Menus -->
+        <div class="hidden md:flex items-center h-full gap-0.5">
+            <div class="relative h-full">
+                <div class="menu-item" onclick="toggleMenu('dd-apple', event)">
+                    <svg viewBox="0 0 384 512" class="w-[14px] h-[14px]" fill="currentColor"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+                </div>
+                <div id="dd-apple" class="tahoe-dropdown left-0">
+                    <div class="dropdown-item" onclick="openWindow('win-about-mac')">About This Mac</div>
+                    <div class="dropdown-sep"></div>
+                    <div class="dropdown-item">System Settings...</div>
+                    <div class="dropdown-item">App Store...</div>
+                    <div class="dropdown-sep"></div>
+                    <div class="dropdown-item">Sleep</div>
+                    <div class="dropdown-item">Restart...</div>
+                    <div class="dropdown-item">Shut Down...</div>
+                </div>
+            </div>
+            <div class="relative h-full">
+                <div class="menu-item font-semibold" onclick="toggleMenu('dd-finder', event)">Gopi Kishan</div>
+                <div id="dd-finder" class="tahoe-dropdown left-0">
+                    <div class="dropdown-item" onclick="openWindow('win-about')">About Gopi</div>
+                    <div class="dropdown-sep"></div>
+                    <div class="dropdown-item">Preferences... <span class="text-white/40 text-[11px]">⌘,</span></div>
+                </div>
+            </div>
+            <div class="relative h-full">
+                <div class="menu-item" onclick="toggleMenu('dd-file', event)">File</div>
+                <div id="dd-file" class="tahoe-dropdown left-0">
+                    <div class="dropdown-item" onclick="openWindow('win-resume')">Open Resume <span class="text-white/40 text-[11px]">⌘O</span></div>
+                    <div class="dropdown-item text-white/30">Close Window <span class="text-white/25 text-[11px]">⌘W</span></div>
+                </div>
+            </div>
+            <div class="menu-item">Edit</div>
+            <div class="menu-item">View</div>
+            <div class="menu-item">Help</div>
+        </div>
+
+        <!-- Right System Tray -->
+        <div class="hidden md:flex items-center h-full gap-1.5 px-2">
+            <div class="relative h-full flex items-center">
+                <div class="flex items-center gap-2.5 px-2 py-0.5 rounded-md hover:bg-white/10 cursor-pointer transition-colors" onclick="toggleMenu('cc-panel', event)">
+                    <i class="ph-bold ph-wifi-high text-[14px] text-white/80"></i>
+                    <i class="ph-bold ph-battery-full text-[15px] text-white/80"></i>
+                    <div class="flex items-center gap-1 font-medium text-[13px] text-white/85">
+                        <span id="clock-date">Wed 1 Apr</span>
+                        <span id="clock-time">10:36 PM</span>
+                    </div>
+                </div>
+                <!-- Control Center -->
+                <div id="cc-panel" class="tahoe-cc" style="top:36px;">
+                    <div class="grid grid-cols-2 gap-2.5 mb-2.5">
+                        <div class="cc-card p-3 flex flex-col gap-2.5">
+                            <div class="flex items-center gap-2.5 cursor-pointer" onclick="toggleCcIcon(this,event)">
+                                <div class="cc-toggle active toggle-icon"><i class="ph-bold ph-wifi-high text-[13px]"></i></div>
+                                <div><span class="text-[11px] font-semibold text-white/90 block leading-tight title-text">Wi-Fi</span><span class="text-[10px] text-white/40 leading-tight status-text">Connected</span></div>
+                            </div>
+                            <div class="flex items-center gap-2.5 cursor-pointer" onclick="toggleCcIcon(this,event)">
+                                <div class="cc-toggle active toggle-icon"><i class="ph-bold ph-bluetooth text-[13px]"></i></div>
+                                <div><span class="text-[11px] font-semibold text-white/90 block leading-tight title-text">Bluetooth</span><span class="text-[10px] text-white/40 leading-tight status-text">On</span></div>
+                            </div>
+                            <div class="flex items-center gap-2.5 cursor-pointer" onclick="toggleCcIcon(this,event)">
+                                <div class="cc-toggle inactive toggle-icon"><i class="ph-bold ph-share-network text-[13px]"></i></div>
+                                <div><span class="text-[11px] font-semibold text-white/90 block leading-tight title-text">AirDrop</span><span class="text-[10px] text-white/40 leading-tight status-text">Off</span></div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-2.5">
+                            <div class="cc-card p-3 flex items-center gap-2 flex-1 cursor-pointer" onclick="toggleCcIcon(this,event)">
+                                <div class="cc-toggle inactive toggle-icon shrink-0"><i class="ph-fill ph-moon text-[13px]"></i></div>
+                                <span class="text-[11px] font-semibold text-white/90 leading-tight">Do Not<br>Disturb</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2.5 flex-1">
+                                <div class="cc-card flex flex-col items-center justify-center p-2 cursor-pointer" onclick="event.stopPropagation()">
+                                    <i class="ph-bold ph-keyboard text-white/60 text-base mb-0.5"></i>
+                                    <span class="text-[8px] font-semibold text-white/50 text-center leading-tight">Keyboard</span>
+                                </div>
+                                <div class="cc-card flex flex-col items-center justify-center p-2 cursor-pointer" onclick="event.stopPropagation()">
+                                    <i class="ph-bold ph-screencast text-white/60 text-base mb-0.5"></i>
+                                    <span class="text-[8px] font-semibold text-white/50 text-center leading-tight">Screen</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cc-card p-3 mb-2.5" onclick="event.stopPropagation()">
+                        <span class="text-[11px] font-semibold text-white/80 mb-2 block">Display</span>
+                        <div class="cc-slider-track" onclick="this.querySelector('.cc-slider-fill').style.width=Math.floor(Math.random()*80+20)+'%'">
+                            <div class="cc-slider-fill" style="width:75%"></div>
+                            <i class="ph-bold ph-sun text-white/90 text-[11px] absolute z-10 left-2 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                        </div>
+                    </div>
+                    <div class="cc-card p-3 mb-2.5" onclick="event.stopPropagation()">
+                        <span class="text-[11px] font-semibold text-white/80 mb-2 block">Sound</span>
+                        <div class="cc-slider-track" onclick="this.querySelector('.cc-slider-fill').style.width=Math.floor(Math.random()*100)+'%'">
+                            <div class="cc-slider-fill" style="width:50%"></div>
+                            <i class="ph-bold ph-speaker-high text-white/90 text-[11px] absolute z-10 left-2 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                        </div>
+                    </div>
+                    <div class="cc-card p-3 flex items-center justify-between" onclick="event.stopPropagation()">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg overflow-hidden bg-white/10 shrink-0"><img src="https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?q=80&w=100&auto=format&fit=crop" alt="Album" class="w-full h-full object-cover"></div>
+                            <div><span class="text-[12px] font-semibold text-white/85 block leading-tight">Total</span><span class="text-[10px] text-white/40 leading-tight">Rawme Hooda & Nishael</span></div>
+                        </div>
+                        <div class="flex gap-1.5 items-center">
+                            <audio id="bg-audio" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"></audio>
+                            <i class="ph-fill ph-play text-white/70 text-lg hover:text-white transition-colors cursor-pointer p-1" id="play-pause-btn" onclick="toggleAudio(event)"></i>
+                            <i class="ph-fill ph-fast-forward text-white/50 text-base hover:text-white/70 transition-colors cursor-pointer p-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- iOS Right Icons -->
+        <div class="md:hidden flex items-center justify-end gap-1.5 z-50 w-1/3 pt-1 pr-2">
+            <i class="ph-fill ph-cell-signal-full text-white/80 text-sm"></i>
+            <i class="ph-bold ph-wifi-high text-white/80 text-sm"></i>
+            <i class="ph-fill ph-battery-full text-white/80 text-lg"></i>
+        </div>
+    </div>
+
+    <!-- DESKTOP ICONS -->
+    <div class="absolute top-16 md:top-12 left-0 md:left-auto right-0 md:right-4 flex flex-row md:flex-col flex-wrap md:flex-nowrap gap-x-4 gap-y-6 md:gap-5 p-4 md:p-2 z-10 w-full md:w-auto justify-start md:justify-end" id="desktop-icons">
+        <div class="desktop-icon" onclick="selectIcon(this)" ondblclick="openWindow('win-about')" ontouchstart="openWindow('win-about')">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="drop-shadow-lg pointer-events-none w-14 h-14"><path fill="#90CAF9" d="M40,12H22l-4-4H8c-2.2,0-4,1.8-4,4v8h40v-4C44,13.8,42.2,12,40,12z"/><path fill="#42A5F5" d="M40,12H8c-2.2,0-4,1.8-4,4v20c0,2.2,1.8,4,4,4h32c2.2,0,4-1.8,4-4V16C44,13.8,42.2,12,40,12z"/></svg>
+            <span>Profile.txt</span>
+        </div>
+        <div class="desktop-icon" onclick="selectIcon(this)" ondblclick="openWindow('win-experience')" ontouchstart="openWindow('win-experience')">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="drop-shadow-lg pointer-events-none w-14 h-14"><path fill="#90CAF9" d="M40,12H22l-4-4H8c-2.2,0-4,1.8-4,4v8h40v-4C44,13.8,42.2,12,40,12z"/><path fill="#42A5F5" d="M40,12H8c-2.2,0-4,1.8-4,4v20c0,2.2,1.8,4,4,4h32c2.2,0,4-1.8,4-4V16C44,13.8,42.2,12,40,12z"/></svg>
+            <span>Experience</span>
+        </div>
+        <div class="desktop-icon" onclick="selectIcon(this)" ondblclick="openWindow('win-resume')" ontouchstart="openWindow('win-resume')">
+            <div class="w-12 h-14 bg-white rounded-lg flex flex-col overflow-hidden shadow-lg border border-white/20 pointer-events-none">
+                <div class="bg-red-500 h-1/4 min-h-[12px] flex items-center justify-center"><span class="text-[8px] text-white font-bold">PDF</span></div>
+                <div class="flex-1 p-1 flex items-center justify-center"><div class="w-6 h-6 border-2 border-red-400 text-red-400 flex items-center justify-center rounded font-bold text-[8px]">GK</div></div>
+            </div>
+            <span>Resume.pdf</span>
+        </div>
+    </div>
+
+    <!-- WINDOWS -->
+    <div id="desktop-area" class="absolute inset-0 pointer-events-none pt-[30px]">
+
+        <!-- Resume Window -->
+        <div id="win-resume" class="tahoe-window pointer-events-auto flex flex-col" style="top:8%;left:15%;width:800px;height:600px;z-index:20;">
+            <div class="tahoe-header">
+                <div class="md:hidden text-blue-400 font-medium text-[17px] flex items-center cursor-pointer absolute left-4 z-20" onclick="closeWindow('win-resume')"><i class="ph-bold ph-caret-left mr-1"></i> Back</div>
+                <div class="hidden md:flex items-center z-20">
+                    <span class="tl tl-close" onclick="closeWindow('win-resume')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"></path></svg></span>
+                    <span class="tl tl-min" onclick="minimizeWindow('win-resume')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M4 12h16"></path></svg></span>
+                    <span class="tl tl-max" onclick="maximizeWindow('win-resume')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path></svg></span>
+                </div>
+                <div class="drag-area absolute inset-0 flex items-center justify-center text-white/70 font-medium text-sm">
+                    <i class="ph-fill ph-file-pdf text-red-400 text-base hidden md:block mr-1.5"></i>
+                    <span class="md:hidden text-white/90 font-semibold text-[17px]">Resume</span>
+                    <span class="hidden md:block">GK_Resume.pdf</span>
+                </div>
+            </div>
+            <div class="window-content flex flex-col md:flex-row" style="background:rgba(20,20,24,0.6);">
+                <div class="flex-1 overflow-y-auto md:p-6 w-full" style="background:rgba(40,42,48,0.8);">
+                    <div class="pdf-page relative">
+                        <div class="border-b-2 border-black pb-4 mb-6">
+                            <h1 class="text-3xl md:text-4xl font-bold uppercase text-black">Gopi Kishan</h1>
+                            <p class="text-sm font-semibold text-gray-600 mt-1">Digital Marketing Manager</p>
+                            <div class="flex flex-col md:flex-row flex-wrap md:gap-4 gap-2 mt-2 text-sm text-gray-700 font-medium">
+                                <span class="flex items-center gap-1"><i class="ph-fill ph-map-pin"></i> Bengaluru, Karnataka 560073</span>
+                                <span class="flex items-center gap-1"><i class="ph-fill ph-phone"></i> +91 62639 95569</span>
+                                <span class="flex items-center gap-1"><i class="ph-fill ph-envelope"></i> kishangopi820@gmail.com</span>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <h2 class="text-xl font-bold uppercase tracking-widest text-black mb-2 border-b border-gray-300 pb-1">About Me</h2>
+                            <p class="text-gray-800 leading-relaxed text-sm">Results-driven Digital Marketing Specialist with 5+ years of experience managing end-to-end digital marketing across paid ads, SEO, and conversion optimization. Proven track record of scaling D2C brands, improving user acquisition, and driving revenue growth through multi-channel strategies.</p>
+                        </div>
+                        <div class="mb-6">
+                            <h2 class="text-xl font-bold uppercase tracking-widest text-black mb-3 border-b border-gray-300 pb-1">Experience</h2>
+                            <div class="mb-5">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-1">
+                                    <h3 class="text-lg font-bold text-black">La French Studio, Paris</h3>
+                                    <span class="text-sm font-semibold text-gray-600">Sep 2023 - Present | Goa</span>
+                                </div>
+                                <h4 class="text-sm font-semibold text-blue-600 italic mb-2">Digital Marketing Manager</h4>
+                                <ul class="list-disc pl-5 text-sm text-gray-800 space-y-1">
+                                    <li>Led complete digital marketing strategy (SEO + Paid Ads + CRO)</li>
+                                    <li>Increased organic traffic by 53% through SEO and content strategy</li>
+                                    <li>Improved conversions by 20% via funnel and landing page optimization</li>
+                                    <li>Managed international campaigns improving performance by 30%</li>
+                                </ul>
+                            </div>
+                            <div class="mb-5">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-1">
+                                    <h3 class="text-lg font-bold text-black">Bhardwaj Builders</h3>
+                                    <span class="text-sm font-semibold text-gray-600">Jun 2020 - Aug 2023 | Raipur</span>
+                                </div>
+                                <h4 class="text-sm font-semibold text-blue-600 italic mb-2">Digital Marketing Executive</h4>
+                                <ul class="list-disc pl-5 text-sm text-gray-800 space-y-1">
+                                    <li>Executed Google Ads & Meta Ads campaigns generating 25% more leads</li>
+                                    <li>Improved CTR by 15% through A/B testing</li>
+                                    <li>Built conversion-focused landing pages and sales funnels</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <h2 class="text-xl font-bold uppercase tracking-widest text-black mb-3 border-b border-gray-300 pb-1">Education</h2>
+                            <div class="flex justify-between items-baseline"><h3 class="font-bold text-black">BBA Marketing</h3><span class="text-sm font-semibold text-gray-600">2019-2022</span></div>
+                            <p class="text-sm text-gray-800">Jain University</p>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold uppercase tracking-widest text-black mb-3 border-b border-gray-300 pb-1">Skills</h2>
+                            <p class="text-sm text-gray-800 leading-relaxed font-medium">Performance Marketing, SEO, Google Ads, Meta Ads, LinkedIn Ads, TikTok Ads, Pinterest Ads, Funnel Optimization, CRO, Email Marketing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notes Window -->
+        <div id="win-about" class="tahoe-window pointer-events-auto flex flex-col" style="top:15%;left:30%;width:500px;height:380px;z-index:21;">
+            <div class="tahoe-header">
+                <div class="md:hidden text-blue-400 font-medium text-[17px] flex items-center cursor-pointer absolute left-4 z-20" onclick="closeWindow('win-about')"><i class="ph-bold ph-caret-left mr-1"></i> Back</div>
+                <div class="hidden md:flex items-center z-20">
+                    <span class="tl tl-close" onclick="closeWindow('win-about')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"></path></svg></span>
+                    <span class="tl tl-min" onclick="minimizeWindow('win-about')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M4 12h16"></path></svg></span>
+                    <span class="tl tl-max" onclick="maximizeWindow('win-about')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path></svg></span>
+                </div>
+                <div class="drag-area absolute inset-0 flex items-center justify-center text-white/50 font-medium text-sm">Notes</div>
+            </div>
+            <div class="window-content p-6" style="background:rgba(251,249,246,0.97);">
+                <p class="text-xs text-center text-gray-400 font-medium mb-4">Today at 11:56 AM</p>
+                <h2 class="text-2xl font-bold mb-2 text-gray-800">Hello, I'm Gopi Kishan 👋</h2>
+                <p class="font-medium text-yellow-600 mb-4">Digital Marketing Manager</p>
+                <p class="mb-4 text-sm leading-relaxed text-gray-700">Results-driven Digital Marketing Specialist with 5+ years of experience managing end-to-end digital marketing across paid ads, SEO, and conversion optimization. Proven track record of scaling D2C brands, improving user acquisition, and driving revenue growth through multi-channel strategies.</p>
+                <div class="flex flex-wrap gap-2 mt-2">
+                    <span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-medium">SEO</span>
+                    <span class="px-2.5 py-1 bg-purple-50 text-purple-600 rounded-full text-xs font-medium">Google Ads</span>
+                    <span class="px-2.5 py-1 bg-green-50 text-green-600 rounded-full text-xs font-medium">Meta Ads</span>
+                    <span class="px-2.5 py-1 bg-orange-50 text-orange-600 rounded-full text-xs font-medium">CRO</span>
+                    <span class="px-2.5 py-1 bg-pink-50 text-pink-600 rounded-full text-xs font-medium">Email Marketing</span>
+                    <span class="px-2.5 py-1 bg-teal-50 text-teal-600 rounded-full text-xs font-medium">Funnel Optimization</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Finder Window -->
+        <div id="win-experience" class="tahoe-window pointer-events-auto flex flex-col" style="top:20%;left:20%;width:650px;height:450px;z-index:22;">
+            <div class="tahoe-header">
+                <div class="md:hidden text-blue-400 font-medium text-[17px] flex items-center cursor-pointer absolute left-4 z-20" onclick="closeWindow('win-experience')"><i class="ph-bold ph-caret-left mr-1"></i> Back</div>
+                <div class="hidden md:flex items-center z-20">
+                    <span class="tl tl-close" onclick="closeWindow('win-experience')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"></path></svg></span>
+                    <span class="tl tl-min" onclick="minimizeWindow('win-experience')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M4 12h16"></path></svg></span>
+                    <span class="tl tl-max" onclick="maximizeWindow('win-experience')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path></svg></span>
+                </div>
+                <div class="drag-area absolute inset-0 flex items-center justify-center text-white/60 font-semibold text-sm">Experience</div>
+            </div>
+            <div class="flex h-[calc(100%-52px)]">
+                <div class="hidden md:flex w-44 p-3 flex-col gap-1 text-[13px] font-medium" style="background:rgba(255,255,255,0.04);border-right:0.5px solid rgba(255,255,255,0.06);">
+                    <span class="text-[10px] font-bold text-white/30 uppercase tracking-wider pl-2 mb-1">Favorites</span>
+                    <div class="flex items-center gap-2 px-2 py-1 rounded-md text-white/60 hover:bg-white/8 cursor-pointer"><i class="ph-fill ph-clock-counter-clockwise text-blue-400"></i> Recents</div>
+                    <div class="flex items-center gap-2 px-2 py-1 rounded-md bg-blue-500/80 text-white cursor-pointer"><i class="ph-fill ph-folder-open"></i> Experience</div>
+                    <div class="flex items-center gap-2 px-2 py-1 rounded-md text-white/60 hover:bg-white/8 cursor-pointer"><i class="ph-fill ph-desktop text-white/40"></i> Desktop</div>
+                </div>
+                <div class="flex-1 p-4 md:p-6 overflow-y-auto" style="background:rgba(255,255,255,0.03);">
+                    <table class="w-full text-sm text-left border-collapse">
+                        <thead><tr class="text-xs text-white/30 border-b border-white/8">
+                            <th class="font-medium pb-2 pl-2">Name</th>
+                            <th class="font-medium pb-2 hidden sm:table-cell">Date Modified</th>
+                            <th class="font-medium pb-2 hidden sm:table-cell">Kind</th>
+                        </tr></thead>
+                        <tbody class="text-white/70">
+                            <tr class="border-b border-white/5 hover:bg-white/6 cursor-pointer" onclick="openWindow('win-resume')">
+                                <td class="py-3 pl-2 flex items-center gap-3 font-medium">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="w-6 h-6"><path fill="#90CAF9" d="M40,12H22l-4-4H8c-2.2,0-4,1.8-4,4v8h40v-4C44,13.8,42.2,12,40,12z"/><path fill="#42A5F5" d="M40,12H8c-2.2,0-4,1.8-4,4v20c0,2.2,1.8,4,4,4h32c2.2,0,4-1.8,4-4V16C44,13.8,42.2,12,40,12z"/></svg>
+                                    <span>1_La_French_Studio_DMM.data</span>
+                                </td>
+                                <td class="py-3 text-white/40 text-xs hidden sm:table-cell">Sep 2023</td>
+                                <td class="py-3 text-white/40 text-xs hidden sm:table-cell">Folder</td>
+                            </tr>
+                            <tr class="border-b border-white/5 hover:bg-white/6 cursor-pointer" onclick="openWindow('win-resume')">
+                                <td class="py-3 pl-2 flex items-center gap-3 font-medium">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="w-6 h-6"><path fill="#90CAF9" d="M40,12H22l-4-4H8c-2.2,0-4,1.8-4,4v8h40v-4C44,13.8,42.2,12,40,12z"/><path fill="#42A5F5" d="M40,12H8c-2.2,0-4,1.8-4,4v20c0,2.2,1.8,4,4,4h32c2.2,0,4-1.8,4-4V16C44,13.8,42.2,12,40,12z"/></svg>
+                                    <span>2_Bhardwaj_Builders_DME.data</span>
+                                </td>
+                                <td class="py-3 text-white/40 text-xs hidden sm:table-cell">Jun 2020</td>
+                                <td class="py-3 text-white/40 text-xs hidden sm:table-cell">Folder</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Mac Window -->
+        <div id="win-about-mac" class="tahoe-window pointer-events-auto" style="top:15%;left:32%;width:360px;height:auto;z-index:30;background:rgba(28,28,32,0.88);backdrop-filter:blur(80px) saturate(220%);-webkit-backdrop-filter:blur(80px) saturate(220%);border-radius:18px;">
+            <div class="tahoe-header !border-none !bg-transparent absolute w-full z-20 h-10 flex items-center px-3">
+                <div class="md:hidden text-blue-400 font-medium text-[17px] flex items-center cursor-pointer absolute left-4 z-20 top-3" onclick="closeWindow('win-about-mac')"><i class="ph-bold ph-caret-left mr-1"></i> Back</div>
+                <div class="hidden md:flex items-center">
+                    <span class="tl tl-close" onclick="closeWindow('win-about-mac')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"></path></svg></span>
+                    <span class="tl tl-min" style="opacity:0.3;cursor:default"></span>
+                    <span class="tl tl-max" style="opacity:0.3;cursor:default"></span>
+                </div>
+                <div class="drag-area absolute inset-0 z-[-1] hidden md:block" style="cursor:grab"></div>
+            </div>
+            <div class="pt-14 pb-7 px-6 flex flex-col items-center h-full relative z-10">
+                <!-- Realistic MacBook Pro SVG with Tahoe wallpaper -->
+                <div class="w-44 h-auto mb-3 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" class="w-full h-full" style="filter:drop-shadow(0 8px 24px rgba(0,0,0,0.4));">
+                        <defs>
+                            <linearGradient id="tahoeScr" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#1a1040"/>
+                                <stop offset="25%" stop-color="#0d1b3e"/>
+                                <stop offset="50%" stop-color="#0e4a6f"/>
+                                <stop offset="75%" stop-color="#1a6b5a"/>
+                                <stop offset="100%" stop-color="#4a9f45"/>
+                            </linearGradient>
+                            <linearGradient id="lidEdge" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#3a3a3e"/>
+                                <stop offset="100%" stop-color="#2a2a2e"/>
+                            </linearGradient>
+                            <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#4a4a4e"/>
+                                <stop offset="100%" stop-color="#2d2d30"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Lid / Screen -->
+                        <rect x="18" y="8" width="164" height="102" rx="7" fill="url(#lidEdge)"/>
+                        <rect x="20" y="10" width="160" height="98" rx="5" fill="#0a0a0a"/>
+                        <rect x="23" y="13" width="154" height="92" rx="3" fill="url(#tahoeScr)"/>
+                        <!-- Notch -->
+                        <path d="M88 13h24v3a3 3 0 01-3 3H91a3 3 0 01-3-3v-3z" fill="#0a0a0a"/>
+                        <!-- Camera dot -->
+                        <circle cx="100" cy="15.5" r="1.2" fill="#1a1a2a" stroke="#333" stroke-width="0.3"/>
+                        <!-- Hinge -->
+                        <rect x="16" y="110" width="168" height="3" rx="1" fill="#3d3d40"/>
+                        <!-- Base -->
+                        <path d="M6 113h188c1 0 2 1 2 2v8c0 2-1.5 3.5-3.5 3.5H5.5C3.5 126.5 2 125 2 123v-8c0-1 1-2 2-2h2z" fill="url(#bodyGrad)"/>
+                        <rect x="6" y="113" width="188" height="1.5" rx="0.5" fill="#555"/>
+                        <!-- Trackpad -->
+                        <rect x="70" y="117" width="60" height="7" rx="2" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+                        <!-- Bottom edge -->
+                        <path d="M8 126.5h184c-1 1-3 2-6 2H14c-3 0-5-1-6-2z" fill="#222"/>
+                        <!-- Rubber feet dots -->
+                        <circle cx="22" cy="127" r="1" fill="#1a1a1a"/>
+                        <circle cx="178" cy="127" r="1" fill="#1a1a1a"/>
+                    </svg>
+                </div>
+
+                <!-- Title -->
+                <h2 class="text-[22px] font-bold text-white/95 mb-0.5 tracking-tight" style="font-feature-settings:'kern';">MacBook Pro</h2>
+                <p class="text-[12px] font-medium text-white/35 mb-5">16-inch, M4 Max, 2026</p>
+
+                <!-- Specs Card -->
+                <div class="text-[12px] w-full px-5 py-4 rounded-2xl" style="background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.08);box-shadow:0 2px 8px rgba(0,0,0,0.1) inset;">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;">
+                        <span class="text-right font-semibold text-white/35 text-[11px]">Chip</span>
+                        <span class="font-medium text-white/85 text-left">Apple M4 Max</span>
+                        <span class="text-right font-semibold text-white/35 text-[11px]">Memory</span>
+                        <span class="font-medium text-white/85 text-left">64 GB Unified Memory</span>
+                        <span class="text-right font-semibold text-white/35 text-[11px]">Storage</span>
+                        <span class="font-medium text-white/85 text-left">1 TB SSD</span>
+                        <span class="text-right font-semibold text-white/35 text-[11px]">Display</span>
+                        <span class="font-medium text-white/85 text-left">Liquid Retina XDR</span>
+                    </div>
+                    <div class="w-full h-px my-3" style="background:rgba(255,255,255,0.06)"></div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;">
+                        <span class="text-right font-semibold text-white/35 text-[11px]">macOS</span>
+                        <span class="font-medium text-white/85 text-left">Tahoe 26.0</span>
+                        <span class="text-right font-semibold text-white/35 text-[11px]">Serial No.</span>
+                        <span class="font-medium text-white/50 text-left tracking-wide">FVFG7K2M4X</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-3 mt-5 w-full">
+                    <button class="flex-1 py-2 rounded-xl text-[12px] font-semibold text-white/75 transition-all hover:bg-white/10 active:scale-[0.98]" style="background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.1);">
+                        More Info...
+                    </button>
+                    <button class="flex-1 py-2 rounded-xl text-[12px] font-semibold text-white/75 transition-all hover:bg-white/10 active:scale-[0.98]" style="background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.1);">
+                        System Report...
+                    </button>
+                </div>
+
+                <!-- Copyright -->
+                <p class="text-[9px] text-white/20 mt-4 text-center">© 2026 Apple Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAHOE DOCK -->
+    <div class="tahoe-dock-wrap">
+        <div class="tahoe-dock">
+            <div class="dock-item open" onclick="openWindow('win-experience')" title="Finder">
+                <svg viewBox="0 0 100 100"><rect x="8" y="8" width="84" height="84" rx="20" fill="url(#finderBg)"/><defs><linearGradient id="finderBg" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#64B5F6"/><stop offset="100%" stop-color="#1565C0"/></linearGradient></defs><path d="M25 60 Q50 82 75 60" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.9"/><rect x="32" y="38" width="8" height="14" rx="4" fill="white" opacity="0.9"/><rect x="60" y="38" width="8" height="14" rx="4" fill="white" opacity="0.9"/></svg>
+                <div class="dock-dot"></div>
+            </div>
+            <div class="dock-item" onclick="openWindow('win-resume')" title="Preview">
+                <svg viewBox="0 0 100 100"><rect x="8" y="8" width="84" height="84" rx="20" fill="#ffffff"/><rect x="8" y="8" width="84" height="30" rx="20" fill="#FF4B4B"/><rect x="8" y="28" width="84" height="10" fill="#FF4B4B"/><text x="50" y="28" font-family="Arial" font-weight="900" font-size="16" fill="white" text-anchor="middle" dominant-baseline="middle">PDF</text><rect x="28" y="48" width="44" height="4" rx="2" fill="#E0E0E0"/><rect x="28" y="58" width="44" height="4" rx="2" fill="#E0E0E0"/><rect x="28" y="68" width="30" height="4" rx="2" fill="#E0E0E0"/></svg>
+                <div class="dock-dot" id="ind-resume"></div>
+            </div>
+            <div class="dock-item" onclick="openWindow('win-about')" title="Notes">
+                <svg viewBox="0 0 100 100"><rect x="8" y="8" width="84" height="84" rx="20" fill="#FFFDE7"/><rect x="8" y="8" width="84" height="26" rx="20" fill="#FBC02D"/><rect x="8" y="24" width="84" height="10" fill="#FBC02D"/><line x1="22" y1="48" x2="78" y2="48" stroke="#E0E0E0" stroke-width="3" stroke-linecap="round"/><line x1="22" y1="60" x2="78" y2="60" stroke="#E0E0E0" stroke-width="3" stroke-linecap="round"/><line x1="22" y1="72" x2="56" y2="72" stroke="#E0E0E0" stroke-width="3" stroke-linecap="round"/></svg>
+                <div class="dock-dot" id="ind-about"></div>
+            </div>
+            <div class="w-px h-10 mx-1 mt-1 hidden md:block" style="background:rgba(255,255,255,0.15)"></div>
+            <div class="dock-item" onclick="openWindow('win-about-mac')" title="System Settings">
+                <svg viewBox="0 0 100 100"><defs><linearGradient id="setBg" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#78909C"/><stop offset="100%" stop-color="#37474F"/></linearGradient></defs><rect x="8" y="8" width="84" height="84" rx="20" fill="url(#setBg)"/><circle cx="50" cy="50" r="28" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="6" stroke-dasharray="4 4.5"/><circle cx="50" cy="50" r="22" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="4"/><path d="M48 50L48 72L52 72L52 50Z" fill="rgba(255,255,255,0.7)"/><g transform="rotate(120 50 50)"><path d="M48 50L48 72L52 72L52 50Z" fill="rgba(255,255,255,0.7)"/></g><g transform="rotate(240 50 50)"><path d="M48 50L48 72L52 72L52 50Z" fill="rgba(255,255,255,0.7)"/></g><circle cx="50" cy="50" r="6" fill="rgba(255,255,255,0.7)"/><circle cx="50" cy="50" r="2.5" fill="rgba(55,71,79,0.9)"/></svg>
+                <div class="dock-dot" id="ind-about-mac"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        let highestZ = 30;
+
+        function toggleAudio(e) {
+            if(e) e.stopPropagation();
+            const a = document.getElementById('bg-audio'), b = document.getElementById('play-pause-btn');
+            if(a.paused) { a.play(); b.classList.remove('ph-play'); b.classList.add('ph-pause'); }
+            else { a.pause(); b.classList.remove('ph-pause'); b.classList.add('ph-play'); }
+        }
+
+        function toggleCcIcon(el, e) {
+            if(e) e.stopPropagation();
+            const icon = el.querySelector('.toggle-icon');
+            if(!icon) return;
+            if(icon.classList.contains('active')) {
+                icon.classList.remove('active'); icon.classList.add('inactive');
+                const s = el.querySelector('.status-text'); if(s) s.textContent = 'Off';
+            } else {
+                icon.classList.remove('inactive'); icon.classList.add('active');
+                const s = el.querySelector('.status-text'); if(s) s.textContent = 'On';
+            }
+        }
+
+        function selectIcon(el) {
+            document.querySelectorAll('.desktop-icon').forEach(e => e.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        document.getElementById('desktop-area').addEventListener('mousedown', function(e) {
+            if(e.target.id === 'desktop-area') document.querySelectorAll('.desktop-icon').forEach(el => el.classList.remove('selected'));
+        });
+
+        function toggleMenu(id, e) {
+            e.stopPropagation();
+            const m = document.getElementById(id), showing = m.classList.contains('show');
+            closeAllMenus();
+            if(!showing) m.classList.add('show');
+        }
+
+        function closeAllMenus() {
+            document.querySelectorAll('.tahoe-dropdown, .tahoe-cc').forEach(m => m.classList.remove('show'));
+        }
+
+        function openWindow(id) {
+            const w = document.getElementById(id);
+            const wasMinimized = w.classList.contains('minimized');
+            w.style.display = 'flex';
+            if(wasMinimized) {
+                // Force reflow so the browser recognizes the current transform state
+                void w.offsetHeight;
+                w.classList.remove('minimized');
+            }
+            if(window.innerWidth <= 768) setTimeout(() => w.classList.add('mobile-active'), 10);
+            const d = document.getElementById('ind-' + id.replace('win-', ''));
+            if(d) d.style.opacity = '1';
+            bringToFront(w);
+            closeAllMenus();
+        }
+
+        function closeWindow(id) {
+            const w = document.getElementById(id);
+            if(window.innerWidth <= 768) { w.classList.remove('mobile-active'); setTimeout(() => { w.style.display = 'none'; }, 400); }
+            else { w.style.opacity = '0'; setTimeout(() => { w.style.display = 'none'; w.style.opacity = '1'; w.classList.remove('maximized'); }, 200); }
+            const d = document.getElementById('ind-' + id.replace('win-', ''));
+            if(d) d.style.opacity = '0';
+        }
+
+        function minimizeWindow(id) {
+            const w = document.getElementById(id);
+            w.classList.add('minimized');
+            // After animation completes, hide it fully so openWindow can re-trigger properly
+            setTimeout(() => {
+                if(w.classList.contains('minimized')) {
+                    w.style.display = 'none';
+                    w.classList.remove('minimized');
+                }
+            }, 300);
+        }
+        function maximizeWindow(id) { const w = document.getElementById(id); w.classList.toggle('maximized'); bringToFront(w); }
+        function bringToFront(el) { highestZ++; el.style.zIndex = highestZ; }
+
+        document.querySelectorAll('.tahoe-window').forEach(w => {
+            makeDraggable(w);
+            w.addEventListener('mousedown', () => bringToFront(w));
+            w.addEventListener('touchstart', () => bringToFront(w));
+        });
+
+        function makeDraggable(el) {
+            let p1=0,p2=0,p3=0,p4=0;
+            const h = el.querySelector('.drag-area');
+            if(h) h.onmousedown = down; else el.onmousedown = down;
+            function down(e) {
+                if(window.innerWidth<=768||el.classList.contains('maximized')) return;
+                e.preventDefault(); p3=e.clientX; p4=e.clientY;
+                document.onmouseup = up; document.onmousemove = drag; bringToFront(el);
+            }
+            function drag(e) { e.preventDefault(); p1=p3-e.clientX; p2=p4-e.clientY; p3=e.clientX; p4=e.clientY; el.style.top=(el.offsetTop-p2)+'px'; el.style.left=(el.offsetLeft-p1)+'px'; }
+            function up() { document.onmouseup=null; document.onmousemove=null; }
+        }
+
+        function updateTime() {
+            const d=document.getElementById('clock-date'), t=document.getElementById('clock-time'), i=document.getElementById('ios-time');
+            const n=new Date(), days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], mos=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            let h=n.getHours(), m=n.getMinutes(); const ap=h>=12?'PM':'AM';
+            let ih=h%12; ih=ih?ih:12; h=h%12; h=h?h:12; m=m<10?'0'+m:m;
+            if(d) d.textContent=`${days[n.getDay()]} ${n.getDate()} ${mos[n.getMonth()]}`;
+            if(t) t.textContent=`${h}:${m} ${ap}`;
+            if(i) i.textContent=`${ih}:${m}`;
+        }
+        setInterval(updateTime, 1000); updateTime();
+        setTimeout(() => openWindow('win-resume'), 300);
+    </script>
+</body>
+</html>
